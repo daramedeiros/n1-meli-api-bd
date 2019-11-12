@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const AlunasSchema = new mongoose.Schema({
+const AlunasSchema = new mongoose.Schema ({
     nome: {type: String},
     dateOfBirth: {type: String},
     nasceuEmSp: {type: String},
@@ -10,3 +10,8 @@ const AlunasSchema = new mongoose.Schema({
     }]
 
 })
+
+
+const Alunas = mongoose.model('Alunas', AlunasSchema);
+
+module.exports = Alunas
