@@ -6,8 +6,8 @@ const fs = require('fs');
 exports.get = (req, res) => {
   // console.log(req.url)
   // res.status(200).send(alunas)
-  Alunas.find(function(err, alunas){
-    console.log(alunas)
+  Alunas.find(function (err, alunas) {
+    if (err) res.status(500).send(err)
     res.status(200).send(alunas);
   })
 }
@@ -32,14 +32,24 @@ exports.getBooks = (req, res) => {
   res.send(tituloLivros)
 }
 
-exports.getSp = (req, res) => {
-  const nasceuSp = alunas.filter(aluna => {
-    console.log(aluna)
-    return aluna.nasceuEmSp == "true"
-  })
-  const meninasSp = nasceuSp.map(aluna => aluna.nome)
+// exports.getSp = (req, res) => {
+//   const nasceuSp = alunas.filter(aluna => {
+//     console.log(aluna)
+//     return aluna.nasceuEmSp == "true"
+//   })
+//   const meninasSp = nasceuSp.map(aluna => aluna.nome)
 
-  res.status(200).send(meninasSp)
+//   res.status(200).send(meninasSp)
+// }
+
+exports.getSp = (req, res) => {
+  Alunas.find({ "nasceuEmSp": true }, (err, paulistas) => {
+    if (err) res.status(500).send(err);
+    const meninasSp = paulistas.map(aluna => aluna.nome);
+
+    console.log(paulistas)
+    res.status(200).send(meninasSp)
+  });
 }
 
 exports.getAge = (req, res) => {
@@ -68,7 +78,7 @@ function calcularIdade(anoDeNasc, mesDeNasc, diaDeNasc) {
   return idade
 }
 
-exports.post = (req, res) => { 
+exports.post = (req, res) => {
   const { nome, dateOfBirth, nasceuEmSp, id, livros } = req.body;
   alunas.push({ nome, dateOfBirth, nasceuEmSp, id, livros });
 
@@ -77,7 +87,7 @@ exports.post = (req, res) => {
       return res.status(500).send({ message: err });
     }
     console.log("The file was saved!");
-  }); 
+  });
 
   return res.status(201).send(alunas);
 }
@@ -90,10 +100,10 @@ exports.postBooks = (req, res) => {
   }
   const { titulo, leu } = req.body;
   alunas[aluna.id - 1].livros.push({ titulo, leu });
-  
+
   fs.writeFile("./src/model/alunas.json", JSON.stringify(alunas), 'utf8', function (err) {
     if (err) {
-        return res.status(500).send({ message: err });
+      return res.status(500).send({ message: err });
     }
     console.log("The file was saved!");
   });
