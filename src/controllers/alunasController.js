@@ -115,17 +115,25 @@ exports.getAge = (req, res) => {
 
 
 exports.post = (req, res) => {
-  const { nome, dateOfBirth, nasceuEmSp, id, livros } = req.body;
-  alunas.push({ nome, dateOfBirth, nasceuEmSp, id, livros });
+  // const { nome, dateOfBirth, nasceuEmSp, id, livros } = req.body;
+  // alunas.push({ nome, dateOfBirth, nasceuEmSp, id, livros });
 
-  fs.writeFile("./src/model/alunas.json", JSON.stringify(alunas), 'utf8', function (err) {
-    if (err) {
-      return res.status(500).send({ message: err });
-    }
-    console.log("The file was saved!");
-  });
+  // fs.writeFile("./src/model/alunas.json", JSON.stringify(alunas), 'utf8', function (err) {
+  //   if (err) {
+  //     return res.status(500).send({ message: err });
+  //   }
+  //   console.log("The file was saved!");
+  // });
 
-  return res.status(201).send(alunas);
+  // return res.status(201).send(alunas);
+
+  let aluna = new Alunas(req.body)
+
+  aluna.save(function(err){
+    if (err) res.status(500).send(err);
+
+    res.status(201).send(aluna)
+  })
 }
 
 exports.postBooks = (req, res) => {

@@ -15,6 +15,8 @@ db.once("open", function(){
 const index = require("./routes/index")
 const alunas = require("./routes/alunasRoute")
 const professoras = require("./routes/professorasRoute")
+const bodyParser = require('body-parser')
+
 
 app.use(express.json());
 
@@ -26,6 +28,8 @@ app.use(function(req, res, next) {
   )
   next()
 })
+
+app.use(bodyParser.json())
 
 app.use("/", index)
 app.use("/alunas", alunas)
