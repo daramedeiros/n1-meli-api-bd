@@ -8,7 +8,9 @@ const AlunasSchema = new mongoose.Schema ({
         titulo: String,
         leu: Boolean,
     }]
-
+}
+, {
+    versionKey: false
 })
 
 
